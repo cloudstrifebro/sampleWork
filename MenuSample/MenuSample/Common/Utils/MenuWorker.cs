@@ -10,8 +10,16 @@ using System.Xml.Serialization;
 
 namespace MenuSample.Common.Utils
 {
+    /// <summary>
+    /// Worker class that is used to simulate various Menu operations.
+    /// </summary>
     public static class MenuWorker
     {
+        /// <summary>
+        /// Gets a menu from a given XML file.
+        /// </summary>
+        /// <param name="path">The fully-qualified path for the XML file.</param>
+        /// <returns>Returns a Menu.</returns>
         public static Menu GetMenu(string path)
         {
             if (string.IsNullOrWhiteSpace(path))
@@ -24,43 +32,48 @@ namespace MenuSample.Common.Utils
             }
         }
 
-        public static Menu Navigate(string url, Menu menu, bool isFound = false)
+        /// <summary>
+        /// Navigates through a menu.  
+        /// </summary>
+        /// <param name="url">The url to search for.</param>
+        /// <param name="menu">The menu containing the URL to search for.</param>
+        /// <returns>Returns an updated menu.</returns>
+        public static Menu Navigate(string url, Menu menu)
         {
-            if (string.IsNullOrWhiteSpace(url) || menu == null) return menu;
-
-            while (!isFound)
-            {
-                if (menu == null) return menu;                
+            //guard used to determine if there is a submenu
+            if (string.IsNullOrWhiteSpace(url) || menu == null) return menu;                
                 
                 foreach(var item in menu.Items)
                 {
+                    //check if the url exists
                     if (item.Path.Value.ToUpperInvariant() == url.ToUpperInvariant())
                     {
-                        isFound = true;
                         item.IsActive = true;
-                        item.ParentMenu = menu;                        
                     }
-                    else if(item.SubMenu != null && !isFound)
+                    //check if url is matched elsewhere in the tree
+                    if(item.SubMenu != null)
                     {
-                        item.ParentMenu = menu;
-                        item.ParentNode = item;
-                        item.SubMenu =  Navigate(url, item.SubMenu, isFound);
+                        //if url doesn't exist, recurse through menu until base case or url found. 
+                        item.SubMenu =  Navigate(url, item.SubMenu);
 
                         //check if children are active
                         if(item.SubMenu != null && item.SubMenu.Items.Any(m => m.IsActive))
                         {
                             item.IsActive = true;
                         }
-                        var result = item;
                     }
                 }
-
-                isFound = true;
-            }
-
+         
             return menu;
         }
 
+        /// <summary>
+        /// Prints a menu.
+        /// </summary>
+        /// <param name="menu">The menu to print.</param>
+        /// <param name="isChild">Flag which determines if this Menu is a child of another menu.</param>
+        /// <param name="depth">The depth of this menu or sub-menu</param>
+        /// <returns>Returns a string which contains the menu structure.</returns>
         public static string PrintMenu(Menu menu, bool isChild = false, int depth = 0)
         {
             if (menu == null) return "";
@@ -80,6 +93,7 @@ namespace MenuSample.Common.Utils
                     depth = 0;
                 }
 
+                //if a submenu exists, recurse through the submenu and format if necessary
                 if(menuItem.SubMenu != null && menuItem.SubMenu.Items.Any())
                 {
                     depth++;
@@ -101,12 +115,23 @@ namespace MenuSample.Common.Utils
             return result;
         }
 
+        /// <summary>
+        /// Formats a parent menu item as a string.
+        /// </summary>
+        /// <param name="item">A parent menu item.</param>
+        /// <returns>Returns the output of a parent menu item.</returns>
         private static string FormatParent(MenuItem item)
         {
             var activeText = item.IsActive ? "ACTIVE" : "";
             return $"{item.DisplayName}, {item.Path.Value} {activeText}\n";
         }
 
+        /// <summary>
+        /// Formats a child menu item as a string.
+        /// </summary>
+        /// <param name="item">A child menu item.</param>
+        /// <param name="depth">The depth of the child menu item.</param>
+        /// <returns>Returns the output of a child menu item.</returns>
         private static string FormatChild(MenuItem item, int depth = 0)
         {
             var activeText = item.IsActive ? "ACTIVE" : "";

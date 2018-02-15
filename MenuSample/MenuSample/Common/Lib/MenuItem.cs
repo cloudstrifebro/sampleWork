@@ -7,6 +7,9 @@ using System.Xml.Serialization;
 
 namespace MenuSample.Common.Lib
 {
+    /// <summary>
+    /// Represents a menu item in a menu.
+    /// </summary>
     [XmlRoot("item")]
     public class MenuItem
     {
@@ -16,11 +19,12 @@ namespace MenuSample.Common.Lib
         public ElementPath Path { get; set; }        
         [XmlElement("subMenu")]
         public Menu SubMenu { get; set; }
-        public Menu ParentMenu { get; set; }
-        public MenuItem ParentNode { get; set; }
         public bool IsActive { get; set; }
     }
 
+    /// <summary>
+    /// Represents an element with a url path.
+    /// </summary>
     [XmlRoot("path")]
     public class ElementPath
     {

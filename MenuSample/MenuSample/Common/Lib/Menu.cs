@@ -7,6 +7,9 @@ using System.Xml.Serialization;
 
 namespace MenuSample.Common.Lib
 {
+    /// <summary>
+    /// Represents a menu tree.
+    /// </summary>
     [XmlRoot("menu")]
     public class Menu
     {

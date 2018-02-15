@@ -22,6 +22,7 @@ namespace MenuSample
             {
                 var filePath = args[0];
                 var url = args[1];
+
                 var menu = MenuWorker.GetMenu(filePath);
                 var updatedMenu = MenuWorker.Navigate(url, menu);
                 var output = MenuWorker.PrintMenu(updatedMenu);
