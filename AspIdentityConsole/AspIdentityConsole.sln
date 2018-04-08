@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.27428.2005
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspIdentityConsole", "AspIdentityConsole\AspIdentityConsole.csproj", "{200D4E70-E19B-474F-A076-281F7F90A0F4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspIdentity", "AspIdentity\AspIdentity.csproj", "{D974D6CE-4EF9-4F7D-9B8E-015F2869945B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspIdentityImpl", "AspIdentityImpl\AspIdentityImpl.csproj", "{9C87A3C0-CD8B-46C6-A33C-ACC2B4BF0916}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{200D4E70-E19B-474F-A076-281F7F90A0F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{200D4E70-E19B-474F-A076-281F7F90A0F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{200D4E70-E19B-474F-A076-281F7F90A0F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D974D6CE-4EF9-4F7D-9B8E-015F2869945B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D974D6CE-4EF9-4F7D-9B8E-015F2869945B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D974D6CE-4EF9-4F7D-9B8E-015F2869945B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D974D6CE-4EF9-4F7D-9B8E-015F2869945B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C87A3C0-CD8B-46C6-A33C-ACC2B4BF0916}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C87A3C0-CD8B-46C6-A33C-ACC2B4BF0916}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C87A3C0-CD8B-46C6-A33C-ACC2B4BF0916}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C87A3C0-CD8B-46C6-A33C-ACC2B4BF0916}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
