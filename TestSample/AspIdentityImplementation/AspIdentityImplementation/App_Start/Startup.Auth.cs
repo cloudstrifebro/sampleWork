@@ -6,12 +6,18 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
 using AspIdentityImplementation.Models;
+using AspIdentityImplementation.Providers;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.Owin.Security.OAuth;
 
 namespace AspIdentityImplementation
 {
     public partial class Startup
     {
+        public static OAuthAuthorizationServerOptions OAuthOptions { get; private set; }
+
+        public static string PublicClientId { get; private set; }
+
         // For more information on configuring authentication, please visit http://go.microsoft.com/fwlink/?LinkId=301864
         public void ConfigureAuth(IAppBuilder app)
         {
@@ -24,7 +30,9 @@ namespace AspIdentityImplementation
             // and to use a cookie to temporarily store information about a user logging in with a third party login provider
             // Configure the sign in cookie
             var securityStampValidator = SecurityStampValidator
-                .OnValidateIdentity<ApplicationUserManager, ApplicationUser, int>(TimeSpan.FromMinutes(30), (manager, user) => user.GenerateUserIdentityAsync(manager), identity => identity.GetUserId<int>());
+                .OnValidateIdentity<ApplicationUserManager, ApplicationUser, int>(TimeSpan.FromMinutes(30), (manager, user) => user.GenerateUserIdentityAsync(manager, DefaultAuthenticationTypes.ApplicationCookie), identity => identity.GetUserId<int>());
+
+
 
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
@@ -38,6 +46,21 @@ namespace AspIdentityImplementation
                 }
             });            
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
+
+            PublicClientId = "self";
+            OAuthOptions = new OAuthAuthorizationServerOptions
+            {
+                TokenEndpointPath = new PathString("/Token"),
+                Provider = new ApplicationOAuthProvider(PublicClientId),
+                AuthorizeEndpointPath = new PathString("/api/Account/ExternalLogin"),
+                AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
+                // In production mode set AllowInsecureHttp = false
+                AllowInsecureHttp = true
+            };
+
+            // Enable the application to use bearer tokens to authenticate users
+            app.UseOAuthBearerTokens(OAuthOptions);
+
 
             // Enables the application to temporarily store user information when they are verifying the second factor in the two-factor authentication process.
             app.UseTwoFactorSignInCookie(DefaultAuthenticationTypes.TwoFactorCookie, TimeSpan.FromMinutes(5));
