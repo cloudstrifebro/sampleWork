@@ -59,7 +59,7 @@ namespace AspIdentityImplementation.Providers
             return Task.FromResult<object>(null);
         }
 
-        public override Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
+        public override async Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
 
             //context.TryGetFormCredentials();            
@@ -72,17 +72,18 @@ namespace AspIdentityImplementation.Providers
                 var mgr = context.OwinContext.GetUserManager<ApplicationUserManager>();           
                 var appUser = mgr.FindByEmailAsync(userName).Result;
 
-                var isValidUser = mgr.CheckPasswordAsync(appUser, password).Result;
+                var isValidUser = await mgr.CheckPasswordAsync(appUser, password);
 
                 if (isValidUser)
                 {
                     context.Validated("self");
-                    return base.ValidateClientAuthentication(context);
+                    await base.ValidateClientAuthentication(context);
+                    return;
                     //return base.ValidateTokenRequest(context);
                 }
             }
 
-            return Task.FromResult<object>(null);
+            return;
         }
 
         public override Task ValidateClientRedirectUri(OAuthValidateClientRedirectUriContext context)

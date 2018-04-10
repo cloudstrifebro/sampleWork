@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.DataHandler.Encoder;
 using Microsoft.Owin.Security.Jwt;
+using Microsoft.Owin.Security.OAuth;
 using Owin;
 
 [assembly: OwinStartup(typeof(AspIdApi.Startup))]
@@ -17,7 +19,7 @@ namespace AspIdApi
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
-            ConfigureOAuthTokenConsumption(app);
+            //ConfigureOAuthTokenConsumption(app);
         }
 
         private void ConfigureOAuthTokenConsumption(IAppBuilder app)
@@ -34,7 +36,9 @@ namespace AspIdApi
                 IssuerSecurityTokenProviders = new IIssuerSecurityTokenProvider[]
                 {
                     new SymmetricKeyIssuerSecurityTokenProvider(issuer, audienceSecret)
-                }
+                },
+                AuthenticationType = DefaultAuthenticationTypes.ExternalBearer,
+                Provider = new OAuthBearerAuthenticationProvider()
             });
         }
     }

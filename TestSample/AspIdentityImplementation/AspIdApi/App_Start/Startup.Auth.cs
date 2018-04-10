@@ -8,8 +8,9 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
-using AspIdApi.Providers;
 using AspIdApi.Models;
+using AspIdentityImplementation.Providers;
+using Microsoft.Owin.Security.Infrastructure;
 
 namespace AspIdApi
 {
@@ -40,7 +41,12 @@ namespace AspIdApi
                 AuthorizeEndpointPath = new PathString("/api/Account/ExternalLogin"),
                 AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
                 // In production mode set AllowInsecureHttp = false
-                AllowInsecureHttp = true
+                AllowInsecureHttp = true,
+                AuthenticationType = DefaultAuthenticationTypes.ExternalBearer,
+                //RefreshTokenProvider = new AuthenticationTokenProvider
+                //{
+                    
+                //}
             };
 
             // Enable the application to use bearer tokens to authenticate users
